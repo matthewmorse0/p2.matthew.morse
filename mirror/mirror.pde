@@ -28,13 +28,19 @@ int totSleep4 = 0;
 int totSleep5 = 0;
 int totSleep6 = 0;
 
+String[] newsData;
+String[] weatherData;
+String[] weatherString;
+String[] calendarData;
+
 //Possible values = [Calendar, News, Messages, Social, Clock, Weather]
 String genTab = "Calendar";
 String date = "1/1/2000";
 String time = "00:00:00";
 
 void setup() {
-  String[] sleepData = loadStrings("sleep_data.txt");
+  String[] sleepString = loadStrings("sleep_data.txt");
+  String[] sleepData = split(sleepString[0], ',');
   totSleep1 = int(sleepData[0]);
   totSleep2 = int(sleepData[1]);
   totSleep3 = int(sleepData[2]);
@@ -45,12 +51,20 @@ void setup() {
   deepSleep = int(sleepData[7]);
   lightSleep = totalSleep - deepSleep;
   
+  String[] newsString = loadStrings("news.txt");
+  newsData = split(newsString[0], ',');
+  weatherString = loadStrings("weather.txt");
+  String[] calendarString = loadStrings("calendar.txt");
+  calendarData = split(calendarString[0], ',');
+  
   
   rectMode(CENTER);
   imageMode(CENTER);
   size(700, 900);
   background(#678ca3);
   fill(#63888d);
+  img = loadImage("dwayne.png");
+  image(img, 350, 450, 700, 900);
   //Gen window
   rect(genX, genY+125, genWidth, genHeight);
   rect(genX, genY, genWidth, genHeight/6);
@@ -66,6 +80,10 @@ void setup() {
   fill(255);
   textSize(30);
   text(date, genX-96, genY+50);
+  textSize(20);
+  for (int i = 0; i < calendarData.length; i = i+1){
+    text(calendarData[i], genX-96, genY+80+i*25);
+  }
   fill(#63888d);
   rect(genX-49, genY+230, genWidth/6, genHeight/6);
   img = loadImage("news.png");
@@ -171,8 +189,8 @@ void draw() {
 }
 
 void redraw(){
-  fill(#678ca3);
-  rect(350, 450, 700, 900);
+  img = loadImage("dwayne.png");
+  image(img, 350, 450, 700, 900);
   fill(#63888d);
   //Gen window
   rect(genX, genY+125, genWidth, genHeight);
@@ -208,19 +226,45 @@ void redraw(){
     fill(255);
     textSize(30);
     text(date, genX-96, genY+50);
+    textSize(15);
+    for (int i = 0; i < calendarData.length; i = i+1){
+      text(calendarData[i], genX-96, genY+70+i*20);
+    }
     fill(#63888d);
   }else if (genTab == "News"){
     rect(genX-49, genY+229, genWidth/6, genHeight/6);
     img = loadImage("news.png");
     image(img, genX-49, genY+229, genWidth/6, genHeight/6);
+    fill(255);
+    textSize(30);
+    text("Top Stories", genX-96, genY+50);
+    textSize(15);
+    for (int i = 0; i < newsData.length; i = i+1){
+      text(newsData[i], genX-96, genY+70+i*20);
+    }
+    fill(#63888d);
   }else if (genTab == "Messages"){
     rect(genX-16, genY+229, genWidth/6, genHeight/6);
     img = loadImage("texting.png");
     image(img, genX-16, genY+229, genWidth/5, genHeight/5);
+    fill(255);
+    textSize(20);
+    text("* Joe - Wassup", genX-96, genY+40);
+    text("Jim - 0 New Messages", genX-96, genY+70);
+    text("Jill - 0 New Messages", genX-96, genY+100);
+    text("Tod - 0 New Messages", genX-96, genY+130);
+    fill(#63888d);
   }else if (genTab == "Social"){
     rect(genX+17, genY+229, genWidth/6, genHeight/6);
     img = loadImage("twitter.png");
     image(img, genX+17, genY+229, genWidth/6, genHeight/6);
+    fill(255);
+    textSize(18);
+    text("James liked your post", genX-96, genY+40);
+    text("Timmy liked your post", genX-96, genY+70);
+    text("Friend request from Bob", genX-96, genY+100);
+    text("Henry liked your post", genX-96, genY+130);
+    fill(#63888d);
   }else if (genTab == "Clock"){
     rect(genX+50, genY+229, genWidth/6, genHeight/6);
     img = loadImage("clock.png");
@@ -234,6 +278,27 @@ void redraw(){
     rect(genX+83, genY+229, genWidth/6, genHeight/6);
     img = loadImage("weather.png");
     image(img, genX+83, genY+229, genWidth/6, genHeight/6);
+    fill(255);
+    textSize(25);
+    text("Day  Low  High", genX-96, genY+50);
+    textSize(15);
+    for (int i = 0; i < weatherString.length; i = i+1){
+      weatherData = split(weatherString[i], ',');
+      if (i == 0){
+        weatherData[1] = weatherData[1] + "'F";
+      }
+      text(weatherData[0], genX-96, genY+70+i*20);
+      text(weatherData[1], genX-30, genY+70+i*20);
+      text(weatherData[2], genX+25, genY+70+i*20);
+      img = loadImage("sunny.png");
+      if (weatherData[3].equals("Cloudy")){
+        img = loadImage("cloudy.png");
+      }else if (weatherData[3].equals("Partly")){
+        img = loadImage("partly.png");
+      }
+      image(img, genX+70, genY+65+i*20, 15, 15);
+    }
+    fill(#63888d);
   }
   
   
