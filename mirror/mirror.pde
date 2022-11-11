@@ -57,7 +57,6 @@ void setup() {
   String[] calendarString = loadStrings("calendar.txt");
   calendarData = split(calendarString[0], ',');
   
-  
   rectMode(CENTER);
   imageMode(CENTER);
   size(700, 900);
@@ -226,9 +225,9 @@ void redraw(){
     fill(255);
     textSize(30);
     text(date, genX-96, genY+50);
-    textSize(15);
+    textSize(20);
     for (int i = 0; i < calendarData.length; i = i+1){
-      text(calendarData[i], genX-96, genY+70+i*20);
+      text(calendarData[i], genX-96, genY+80+i*25);
     }
     fill(#63888d);
   }else if (genTab == "News"){
